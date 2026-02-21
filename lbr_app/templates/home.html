@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<main role="main" style="background-color: #121212; color: #e0ffe0; min-height: 100vh; padding-top: 2rem;">
+
+  <div class="container text-center mb-5">
+    <img src="{% static 'Library-3.jpg' %}" alt="Library Logo" height="140" class="mb-3">
+    <h1 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;" class="mb-3">Unlock Your Curiosity</h1>
+    <p class="lead">More than just books. Dive into a universe of ideas, stories, and human imagination.</p>
+    <a href="/books" class="btn btn-outline-light btn-lg mt-3" style="border-radius: 30px;"> Start Exploring</a>
+  </div>
+
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="p-4 rounded" style="background-color: #1f1f1f;">
+          <h3>Explore the Unknown</h3>
+          <p>Books are portals to other worlds — from AI futures to ancient myths. Each page you flip is a step deeper into discovery.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded" style="background-color: #1f1f1f;">
+          <h3>Our Digital Evolution</h3>
+          <p>We've integrated a smart catalog, real-time availability, and a seamless reservation system. Tech meets tradition!</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-4 rounded" style="background-color: #1f1f1f;">
+          <h3>Book Fact of the Day </h3>
+          <p>Did you know? The longest sentence ever printed is 823 words — found in Victor Hugo’s *Les Misérables*.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container text-center mt-5">
+    <hr style="background-color: #4caf50;">
+    <p class="mt-4">Curated by Library Book Record, Building Future-Ready Minds</p>
+  </div>
+
+</main>
+
+<footer class="container text-center py-3">
+  <p class="text-muted">© 2025 Library Book Record | All rights reserved</p>
+</footer>
+{% endblock %}

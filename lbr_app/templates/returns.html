@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container mt-4">
+    <div class="text-center">
+        <h3 class="mb-3 fw-bold">Book Returns</h3>
+        <form class="d-flex justify-content-center my-3" role="search" action="#">
+            {% csrf_token %}
+            <input class="form-control me-2 w-25 shadow-sm" type="search"  name="query" value="{{ query }}">
+            <button class="btn btn-outline-primary px-4" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="text-center mb-2">
+        <p class="fw-semibold text-muted">{{ returns|length }} active rental{{ returns|length|pluralize }} found.</p>
+    </div>
+
+    <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+        <table class="table table-bordered table-hover align-middle shadow-sm" style="min-width: 900px;">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th> Reference ID</th>
+                    <th> Name</th>
+                    <th> Book</th>
+                    <th> Rental Date</th>
+                    <th> Return Due</th>
+                    <th> Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rental in returns %}
+                <tr class="text-center">
+                    <td class="fw-medium">{{ rental.student_ref_id }}</td>
+                    <td>{{ rental.student_name }}</td>
+                    <td class="text-primary fw-semibold">{{ rental.book_name }}</td>
+                    <td>{{ rental.rental_date|date:"Y-m-d H:i" }}</td>
+                    <td class="text-danger">{{ rental.return_date|date:"Y-m-d H:i" }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'toggle_return' rental.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">No rentals found at the moment.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

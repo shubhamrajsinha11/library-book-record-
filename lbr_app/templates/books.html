@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container py-4" style="max-width: 1400px;">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold text-primary">📚 Explore Our Book Collection</h2>
+        <form class="d-flex justify-content-center mt-3" role="search" action="/books/" method="POST">
+            {% csrf_token %}
+            <input class="form-control w-50 me-2 shadow-sm" type="search" placeholder="Search by title" name="query" value="{{ query }}">
+            <button class="btn btn-outline-primary" type="submit"> Search</button>
+        </form>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mb-4">
+        <a href="/admin/" class="btn btn-primary"> Add a Book</a>
+    </div>
+
+    <div class="text-center mb-3">
+        <p class="text-muted">{{ book|length }} book{{ book|length|pluralize }} available.</p>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" style="max-height: 540px; overflow-y: auto;">
+        {% for book in book %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="row g-0">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
+                        {% if book.book_thumbnail %}
+                        <img src="{{ book.book_thumbnail.url }}" class="img-fluid rounded-start" style="width: 100px; height: 130px; object-fit: cover;" alt="Thumbnail">
+                        {% else %}
+                        <img src="{% static 'sbssu_logo.jpeg' %}" class="img-fluid rounded-start" style="width: 100px; height: 130px; object-fit: cover;" alt="Default">
+                        {% endif %}
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary mb-1">{{ book.book_name }}</h5>
+                            <p class="card-text mb-1"><strong>Author:</strong> {{ book.book_author }}</p>
+                            <p class="card-text mb-1"><small class="text-muted">Publisher: {{ book.book_publisher }} ({{ book.book_year }})</small></p>
+                        </div>
+                        <div class="card-footer bg-white border-0 d-flex justify-content-end px-3 pb-3">
+                            <form action="{% url 'toggle_bag' book.id %}" method="post">
+                                {% csrf_token %}
+                                {% if book.id in bag_ids %}
+                                    <button class="btn btn-outline-danger btn-sm"> Remove</button>
+                                {% else %}
+                                    <button class="btn btn-outline-success btn-sm"> Add to Bag</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="text-center">
+            <p class="text-muted">No books found.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

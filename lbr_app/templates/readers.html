@@ -1,0 +1,95 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block main_content %}
+<div class="container-fluid py-4 px-3" style="background: linear-gradient(to right, #e3f2fd, #f3e5f5); min-height: 100vh;">
+  <div class="row g-4">
+
+    <!-- Registration Panel -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm border-0" style="background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(6px);">
+        <div class="card-header bg-gradient" style="background: #6a1b9a;">
+          <h5 class="text-white text-center m-0">📋  New Subscriber Login</h5>
+        </div>
+        <div class="card-body" style="max-height: 600px; overflow-y: auto;">
+          <form action="/students/add/" method="POST">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="student_name">
+            </div>
+            <div class="mb-3 text-start">
+              <label class="form-label">Contact</label>
+              <input type="text" class="form-control" name="student_contact">
+            </div>
+            <div class="mb-3 text-start">
+              <label class="form-label">Subscriber ID</label>
+              <input type="text" class="form-control" name="student_id">
+            </div>
+            <div class="mb-3 text-start">
+              <label class="form-label">Address</label>
+              <textarea class="form-control" name="address"></textarea>
+            </div>
+            <div class="d-grid mt-3">
+              <button class="btn btn-primary" type="submit"> Save Subscriber</button>
+            </div>
+          </form>
+          <ul class="mt-4 small text-muted text-start ps-3">
+            <li>Avoid duplicate registrations</li>
+            <li>Inactive entries will be auto-handled</li>
+            <li>Contact details may be verified</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reader Info & Search Panel -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm border-0 mb-3">
+        <div class="card-body">
+          <form class="d-flex" role="search" action="/readers/" method="POST">
+            {% csrf_token %}
+            <input class="form-control me-2" type="search" placeholder=" Search " aria-label="Search" name="query" value="{{query}}">
+            <button class="btn btn-outline-primary" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <p class="mb-3">{{ students|length }} users Subscribed </p>
+          <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+            <table class="table table-hover align-middle">
+              <thead class="table-light sticky-top">
+                <tr>
+                  <th scope="col">Ref ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Contact</th>
+                  <th scope="col">Subscriber ID</th>
+                  <th scope="col">Address</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for student in students %}
+                  <tr>
+                    <td>{{ student.student_ref_id }}</td>
+                    <td>{{ student.student_name }}</td>
+                    <td>{{ student.student_contact }}</td>
+                    <td>{{ student.student_id }}</td>
+                    <td>{{ student.student_address }}</td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="5" class="text-center text-muted">No reader found 😕</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
